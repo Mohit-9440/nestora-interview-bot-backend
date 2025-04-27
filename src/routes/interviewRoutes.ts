@@ -1,8 +1,8 @@
-import express from 'express';
-import { askInterviewQuestions } from '../controllers/interviewController';
+import { Router, Request, Response } from "express";
+import { askInterviewQuestions } from "../controllers/interviewController";
 
-const router = express.Router();
+const router: Router = Router();
 
-router.post('/', askInterviewQuestions);
+router.post("/", askInterviewQuestions);
 
 export default router;
