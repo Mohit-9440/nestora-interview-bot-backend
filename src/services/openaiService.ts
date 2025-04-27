@@ -1,19 +1,25 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from "openai";
+import dotenv from "dotenv";
 
-const configuration = new Configuration({
+dotenv.config();
+
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
-
 export const generateQuestions = async (role: string) => {
-  const prompt = `Generate 5 tough interview questions for a ${role} role.`;
-  
-  const completion = await openai.createChatCompletion({
+  const prompt = `Generate 5 tricky interview questions for a ${role} developer.`;
+
+  const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
+    temperature: 0.7,
+    max_tokens: 500,
   });
 
-  const content = completion.data.choices[0]?.message?.content || "";
-  return content.split('\n').filter(q => q.trim() !== '');
+  const questions = response.choices[0]?.message?.content
+    ?.split("\n")
+    .filter((q) => q.trim() !== "");
+
+  return questions || [];
 };
