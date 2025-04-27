@@ -5,13 +5,14 @@ dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  baseURL: "https://api.together.xyz/v1", // ✅ Important change for Together.ai
 });
 
 export const generateQuestions = async (role: string) => {
   const prompt = `Generate 5 tricky interview questions for a ${role} developer.`;
 
   const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: "mistralai/Mixtral-8x7B-Instruct-v0.1", // Together.ai model
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
     max_tokens: 500,
